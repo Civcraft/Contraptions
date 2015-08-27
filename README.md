@@ -18,16 +18,27 @@ Well, first, we need to put some limits on the types of nodes that can live with
 ### Definitions
 
   **Contraption**: An Acyclic graph involving at least one active Gadget. Contraptions can be combined into larger Contraptions.
+
   **Gadget**: A Node in the graph
+
   **Pipe**: A color-coded link between Gadgets if they cannot physically touch
+
   **Contraption Mode**: An active user mode (similar to Citadel or Bastions) allowing placement, manipulation, and control of Gadgets
+
   **Gadget UI**: A guided User Interaction for a Gadget. Upon placement allows the choice of "type" based on the block placed; provides feedback on the costs needed to "build" the gadget and consumption of costs once collected. Allows updates to a placed Gadget, perhaps unlocking new features, improving existing ones, or other advanced functions.
+
   **Item**: A Minecraft item, perhaps with custom lore
+
   **Resource**: A virtual item, only has meaning in the context of Contraptions. Could be "power", "magic" or other abstract non-realized properties
+
   **Input**: A quantity consumed, represented in terms of Amount of Type per Time Period, or Amount / Time
+
   **Output**: A quantity produced, represented in terms of Amount of Type per Time Period, or Amount / Time.
+
   **Transform**: The "glue" between Input and Output, expressed as conditions on input or output or both, including limiters or suppressions (e.g. output is suppressed if input is not fully realized, or output is slowed if input is only met after a longer time period)
+
   **Citadel**: Citadel respect is important. Initially, any Gadget or Pipe reinforced to a group must be in the same group to be part of the same Contraption. Eventually, we could leverage Public groups to allow "public" power infrustructure to emerge (potentially), perhaps by allowing certain types of resources to cross group boundaries under specific conditions.
+
   **RealisticBiomes**: Will get into this more lately, but a close relationship to Realistic Biomes may be necessary to handle the "farming" contraptions. Realistic Biomes allows complete control over the ability of crops, trees, and other elements to be spawned within particular biomes, or how "well" they spawn.
 
 Alright, got it? Good. Let's talk about the types of Gadgets we can support, and what kind of features they might have.
@@ -172,4 +183,17 @@ Class BindableMarker
 
 class ConnectedMarker
 
-Intefacp100/10
+Interface Totem
+
+Class GeneralTotem
+
+Interface Flowable
+
+Abstract Class Resource
+
+Class Power
+
+Abstract Class Item
+
+Class SpigotItem
+

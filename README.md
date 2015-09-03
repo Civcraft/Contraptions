@@ -1,12 +1,12 @@
 Contraptions REBOOT
 ======================
 
-After serious thought and reflection on the existing infrastructure offered in gmlaxfanatic's FactoryMod Reboot, I've decided to go a slightly different direction. This document will be the design document that all contributors need to adher to as we work together to develop a new Contraptions that is flexible enough to both cover existing factories and whatever new technologies we want to unlock in the future, without tying us to arbitrary monolithic fixed format structures. Instead, let's empower the players to be creative and give full flexibility without sacrificing our ability to run factories without direct player involvement.
+After serious thought and reflection on the existing infrastructure offered in gmlaxfanatic's FactoryMod Reboot, I've decided to go a slightly different direction. This document will be the design document that all contributors need to adher to as we work together to develop a new Contraptions that is flexible enough to both cover existing factories and whatever new technologies we want to unlock in the future, without tying us to arbitrary monolithic fixed format structures. Instead, let's empower the players to be creative and give full flexibility without sacrificing our ability to run factories without direct player involvement (hopefully!)
 
 How can we do this?
 
-  * Acyclic graphs
-  * Nodes that represent Inputs, Transforms, and Outputs (yep, that's it)
+  * Directed graphs (with cycles!)
+  * Nodes that represent Inputs, Storage, Transforms, and Outputs (yep, that's it)
   * Arbitrary configurations of Nodes in "Real-space"
   * Extension of edges between nodes via Pipes
   * Comprehensive Server-Delivered UI experience
@@ -17,7 +17,7 @@ Well, first, we need to put some limits on the types of nodes that can live with
 
 ### Definitions
 
-  **Contraption**: An Acyclic graph involving at least one active Gadget. Contraptions can be combined into larger Contraptions.
+  **Contraption**: A Directed graph (probably cyclic) involving at least one active Gadget. Contraptions can be combined into larger Contraptions.
 
   **Gadget**: A Node in the graph
 
@@ -149,51 +149,10 @@ In this way, the Generator produces power for the Converter; the Converter pulls
 
 # Technical Details
 
-Abstract Class Gadget
+Node Classes:
 
-Interface Container
-
-Class Storage
-
-Class Battery
-
-Interface Collector
-
-Class GeneralCollector
-
-Class ItemLockedCollector
-
-Class ResourceLockedCollector
-
-Interface Converter
-
-Class Generator
-
-Class GeneralConverter
-
-Interface Consumer
-
-Class Lubricator
-
-Class GeneralConsumer
-
-Interface Marker
-
-Class BindableMarker
-
-class ConnectedMarker
-
-Interface Totem
-
-Class GeneralTotem
-
-Interface Flowable
-
-Abstract Class Resource
-
-Class Power
-
-Abstract Class Item
-
-Class SpigotItem
-
+  * Node: Core interface leveraged by traversal Algorithms, represents a Node in a graph.
+  * Edge: Core interface leveraged by traversal Algorithms, represents an Edge in a graph.
+  * GadgetInput: Defines the interface contract for Nodes which exert Pull on their neighbors or accept input. Is Edge?
+  * GadgetOuput: Defines the interface contract for Nodes which exert Push on their neighbors or grant output. Is Edge?
+  * GadgetBase: Most nodes will extend from GadgetBase, which provides baseline implementations of GadgetInput and GadgetOutput interfaces. (Probably).

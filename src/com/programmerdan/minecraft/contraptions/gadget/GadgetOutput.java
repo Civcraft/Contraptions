@@ -19,8 +19,8 @@ public interface GadgetOutput {
 	 * In functional terms, it means that the OutputPushes of this GadgetOutput
 	 * will push to the InputPulls and MaximumInput of the connected GadgetInput.
 	 *
-	 * It should be noted that an outputLink should only be established if
-	 * this Gadget PUSHES to connected GadgetNodes.
+	 * OutputLink should be established if this gadget PUSHES <i>or</i> if the other
+	 * gadget PULLS. It should not be established if there is no relationship.
 	 *
 	 * If this Gadget does not PUSH, but does PULL, look at {@link GadgetInput#inputLink} instead.
 	 *
@@ -38,14 +38,14 @@ public interface GadgetOutput {
 	 *
 	 * @param link the GadgetInput to unlink.
 	 */
-	public void inputUnlink(GadgetInput link);
+	public void outputUnlink(GadgetInput link);
 
 	/**
 	 * Gets the current list of output links.
 	 *
 	 * @return a List of GadgetInput interface objects that all point at this output.
 	 */
-	public List<GadgetInput> getInputLinks();
+	public List<GadgetInput> getOutputLinks();
 
 	/**
 	 * Gets if this GadgetOutput exerts a push on Inputs attached to it. 

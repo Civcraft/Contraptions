@@ -19,8 +19,8 @@ public interface GadgetInput {
 	 * In functional terms, it means that the InputPulls of this GadgetInput
 	 * will draw from the OutputPushs and MaximumOutput of the connected GadgetOutput.
 	 *
-	 * It should be noted that an inputLink should only be established if
-	 * this Gadget PULLS from connected GadgetNodes.
+	 * InputLink should be established if this gadget PULLS <i>or</i> if the other
+	 * gadget PUSHES. It should not be established if there is no relationship.
 	 *
 	 * If this Gadget does not PULL, but does PUSH, look at {@link GadgetOutput#outputLink} instead.
 	 *

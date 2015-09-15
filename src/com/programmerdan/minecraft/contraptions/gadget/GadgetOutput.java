@@ -1,5 +1,10 @@
 package com.programmerdan.minecraft.contraptions.gadget;
 
+import java.util.List;
+
+import com.programmerdan.minecraft.contraptions.time.TimeMeasure;
+import com.programmerdan.minecraft.contraptions.time.TickMeasure;
+
 /**
  * Meant to be the "Output side" of a Gadget, includes methods to deal with
  * the Output Push requirements of a Gadget, if any, and the methods to deal
@@ -60,13 +65,14 @@ public interface GadgetOutput {
 	 * 
 	 * Implementations are free to use whatever information is available to accurately
 	 * determine the push over the requested time period.
+	 * @param <T>
 	 *
 	 * @param overTime The {@link TimeMeasure} subclass instance indicating how long to
 	 *   calculate the push.
 	 * @return a List of {@link PipedRate} instances indicating an ItemStack rate over a
 	 *   time period as a TimeMeasure.
 	 */
-	public T List<PipedRate<T extends TimeMeasure>> getOutputPush(T overTime);
+	public <T extends TimeMeasure> List<PipedRate<T>> getOutputPush(T overTime);
 
 	/**
 	 * Gets the amount of instantaneous (per tick) push this GadgetOutput exerts. The basic
@@ -101,7 +107,7 @@ public interface GadgetOutput {
 	 *   indicating any item is accepted, but can allow for more complex scenarios
 	 *   involving special rate limits per item type.
 	 */
-	public T List<PipedRate<T extends TimeMeasure>> getMaximumOutput(T overTime);
+	public <T extends TimeMeasure> List<PipedRate<T>> getMaximumOutput(T overTime);
 
 	/**
 	 * Gets the amount of instantaneous (per tick) input this GadgetOutput can sustain

@@ -1,5 +1,10 @@
 package com.programmerdan.minecraft.contraptions.gadget;
 
+import java.util.List;
+
+import com.programmerdan.minecraft.contraptions.time.TimeMeasure;
+import com.programmerdan.minecraft.contraptions.time.TickMeasure;
+
 /**
  * Meant to be the "Input side" of a Gadget, includes methods to deal with
  * the Input Pull requirements of a Gadget, if any, and the methods to deal
@@ -66,7 +71,7 @@ public interface GadgetInput {
 	 * @return a List of {@link PipedRate} instances indicating an ItemStack rate over a
 	 *   time period as a TimeMeasure.
 	 */
-	public T List<PipedRate<T extends TimeMeasure>> getInputPull(T overTime);
+	public <T extends TimeMeasure> List<PipedRate<T>> getInputPull(T overTime);
 
 	/**
 	 * Gets the amount of instantaneous (per tick) pull this GadgetInput exerts. The basic
@@ -101,7 +106,7 @@ public interface GadgetInput {
 	 *   indicating any item is accepted, but can allow for more complex scenarios
 	 *   involving special rate limits per item type.
 	 */
-	public T List<PipedRate<T extends TimeMeasure>> getMaximumInput(T overTime);
+	public <T extends TimeMeasure> List<PipedRate<T>> getMaximumInput(T overTime);
 
 	/**
 	 * Gets the amount of instantaneous (per tick) input this GadgetInput can sustain

@@ -71,7 +71,7 @@ public interface GadgetInput {
 	 * @return a List of {@link PipedRate} instances indicating an ItemStack rate over a
 	 *   time period as a TimeMeasure.
 	 */
-	public <T extends TimeMeasure> List<PipedRate<T>> getInputPull(T overTime);
+	public <T extends TimeMeasure<?>> List<PipedRate<T>> getInputPull(T overTime);
 
 	/**
 	 * Gets the amount of instantaneous (per tick) pull this GadgetInput exerts. The basic
@@ -106,7 +106,7 @@ public interface GadgetInput {
 	 *   indicating any item is accepted, but can allow for more complex scenarios
 	 *   involving special rate limits per item type.
 	 */
-	public <T extends TimeMeasure> List<PipedRate<T>> getMaximumInput(T overTime);
+	public <T extends TimeMeasure<?>> List<PipedRate<T>> getMaximumInput(T overTime);
 
 	/**
 	 * Gets the amount of instantaneous (per tick) input this GadgetInput can sustain

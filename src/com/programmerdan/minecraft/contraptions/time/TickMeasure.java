@@ -3,6 +3,9 @@ package com.programmerdan.minecraft.contraptions.time;
 import com.programmerdan.minecraft.contraptions.time.unit.Tick;
 
 public class TickMeasure implements TimeMeasure<Tick> {
+	public static final TickMeasure ONE = new TickMeasure(1.0d);
+	public static final TickMeasure TWENTY = new TickMeasure(20.0d);
+	
 	private double length;
 	
 	public TickMeasure(double length) {

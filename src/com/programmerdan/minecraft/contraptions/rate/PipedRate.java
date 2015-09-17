@@ -7,10 +7,15 @@ import com.programmerdan.minecraft.contraptions.time.TimeMeasure;
  *   imaginary) and a time measure, indicating how many of the item
  *   can be moved within the time measure.
  *   
- * @author ProgrammerDa
- *
+ * @author ProgrammerDan
+ * @since 1.0.0 September 2015
  * @param <T extends TimeMeasure<?>> The actual time measure of this rate.
  */
 public abstract class PipedRate<T extends TimeMeasure<?>> {
-
+	
+	private T measure;
+	
+	public T getMeasure() {
+		return measure;
+	}
 }

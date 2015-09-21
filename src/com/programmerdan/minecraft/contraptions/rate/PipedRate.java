@@ -1,6 +1,7 @@
 package com.programmerdan.minecraft.contraptions.rate;
 
 import com.programmerdan.minecraft.contraptions.time.TimeMeasure;
+import com.programmerdan.minecraft.contraptions.util.AdvItemStack;
 
 /**
  * Represents a movable quantity that has an item stack (either real or
@@ -13,9 +14,27 @@ import com.programmerdan.minecraft.contraptions.time.TimeMeasure;
  */
 public abstract class PipedRate<T extends TimeMeasure<?>> {
 	
-	private T measure;
+	public abstract AdvItemStack getResource();
 	
-	public T getMeasure() {
-		return measure;
-	}
+	public abstract T getTime();
+	
+	/**
+	 * Remap this rate into a new time measure. Does not change <i>this</i> but returns a 
+	 *   new PipedRate.
+	 *   
+	 * @param clazz
+	 * @param measure
+	 * @return
+	 */
+	public abstract <Z extends TimeMeasure<?>> PipedRate<Z> reRate(Class<Z> clazz, Z measure);
+	
+	/**
+	 * Gets this resource count as if over a new time; doesn't change <i>this</i> but returns
+	 *   an AdvItemStack remapped either larger or smaller based on newMeasure. The new measure
+	 *   must be of the same type as the old measure.
+	 *   
+	 * @param newMeasure
+	 * @return
+	 */
+	public abstract AdvItemStack getResourceOverNewTime(T newMeasure);
 }

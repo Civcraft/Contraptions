@@ -26,7 +26,7 @@ public abstract class PipedRate<T extends TimeMeasure<?>> {
 	 * @param measure
 	 * @return
 	 */
-	public abstract <Z extends TimeMeasure<?>> PipedRate<Z> reRate(Class<Z> clazz, Z measure);
+	public abstract <Z extends TimeMeasure<?>, R extends PipedRate<Z>> R reRate(Class<R> clazz, Z measure);
 	
 	/**
 	 * Gets this resource count as if over a new time; doesn't change <i>this</i> but returns

@@ -15,7 +15,7 @@ public class Tick extends TimeUnit {
 	private static final double[] unknown = new double[]{0.0, 0.0};
 	
 	@Override
-	public UnitType getUnit() {
+	public UnitType getType() {
 		return UnitType.Tick;
 	}
 	

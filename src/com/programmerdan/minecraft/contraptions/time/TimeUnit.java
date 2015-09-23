@@ -18,7 +18,7 @@ public abstract class TimeUnit {
 		throw new IllegalArgumentException();
 	};
 	
-	public abstract UnitType getUnit();
+	public abstract UnitType getType();
 	/**
 	 * Returns a double array with idx 0 as numerator and idx 1 as denominator,
 	 * where numerator is convert units, and denominator is this units.

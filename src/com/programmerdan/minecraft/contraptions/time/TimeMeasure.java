@@ -12,5 +12,5 @@ public interface TimeMeasure<T extends TimeUnit> extends Comparable<TimeMeasure<
 	public double getLength();
 	public T getUnit();
 	public int compareTo(TimeMeasure<T> tm);
-	public <U extends TimeUnit> TimeMeasure<U> convertTo(Class<U> clazz);
+	public <U extends TimeUnit> TimeMeasure<U> convertTo(Class<U> clazz, TimeUnit.UnitType unit);
 }

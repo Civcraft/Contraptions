@@ -8,6 +8,23 @@ package com.programmerdan.minecraft.contraptions.util;
  * @author ProgrammerDan
  * @since 1.0.0 September 2015
  */
-public class AdvItemStack {
+public class AdvItemStack implements Cloneable{
+	private double size;
+	
+	public AdvItemStack(double size) {
+		this.size = size;
+	}
+	
+	public double getSize() {
+		return size;
+	}
+	
+	@Override
+	public AdvItemStack clone() {
+		return new AdvItemStack(this.size);
+	}
 
+	public void setSize(double size) {
+		this.size = size;
+	}
 }

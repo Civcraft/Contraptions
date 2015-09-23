@@ -1,5 +1,12 @@
 package com.programmerdan.minecraft.contraptions.gadget;
 
+import java.util.List;
+
+import com.programmerdan.minecraft.contraptions.rate.PipedRate;
+import com.programmerdan.minecraft.contraptions.time.TickMeasure;
+import com.programmerdan.minecraft.contraptions.time.TimeMeasure;
+import com.programmerdan.minecraft.contraptions.util.AdvItemStack;
+
 /**
  * Base implementation of GadgetInput and GadgetOutput contracts, including
  * other graph-focused functions necessary for whatever algorithm controls
@@ -23,5 +30,18 @@ package com.programmerdan.minecraft.contraptions.gadget;
  * @since 1.0.0 September 2015
  */
 public abstract class GadgetBase implements GadgetInput, GadgetOutput {
-
+	public abstract boolean hasStorage();
+	public abstract <T extends TimeMeasure<?>> void adjustStorage(List<PipedRate<T>> inflow,
+			List<PipedRate<T>> outflow, T time);
+	public abstract void adjustStorageOneTick(List<PipedRate<TickMeasure>> inflow, 
+			List<PipedRate<TickMeasure>> outflow);
+	public abstract List<AdvItemStack> getStorage();
+	
+	public abstract boolean hasPrivateStorage();
+	public abstract <T extends TimeMeasure<?>> void adjustPrivateStorage(List<PipedRate<T>> inflow,
+			List<PipedRate<T>> outflow, T time);
+	public abstract void adjustPrivateStorageOneTick(List<PipedRate<TickMeasure>> inflow, 
+			List<PipedRate<TickMeasure>> outflow);
+	public abstract List<AdvItemStack> getPrivateStorage();
+	
 }

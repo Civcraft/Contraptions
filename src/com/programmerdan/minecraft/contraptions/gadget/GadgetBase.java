@@ -30,18 +30,90 @@ import com.programmerdan.minecraft.contraptions.util.AdvItemStack;
  * @since 1.0.0 September 2015
  */
 public abstract class GadgetBase implements GadgetInput, GadgetOutput {
+	/**
+	 * Indicator if this Gadget has a storage component or not.
+	 * @return true if this Gadget has public storage, false otherwise.
+	 */
 	public abstract boolean hasStorage();
+	
+	/**
+	 * Adjusts the storage based on flow rate INTO the storage against flow rate
+	 * OUT OF the storage. Anything that can't fit is discarded. Implementations that
+	 * are waste-aware should use the {@link #emulateAdjustStorage(List, List, TimeMeasure)} first
+	 * to see how much waste will occur and adjust runtime accordingly.
+	 * 
+	 * @param inflow The List of PipedRate elements flowing into the storage, as measured over time. Assumption is that flowrate
+	 *   is fixed for this period; e.g. PipedRate is not a complex function, but a constant, over the given time.
+	 * @param outflow The List of PipedRate elements flowing out of the storage, as measued over time.
+	 * @param time The amount of time that elements flow in and out of the storage, given the PipedRates.
+	 */
 	public abstract <T extends TimeMeasure<?>> void adjustStorage(List<PipedRate<T>> inflow,
 			List<PipedRate<T>> outflow, T time);
+	
+	/**
+	 * See {@link #adjustStorage(List, List, TimeMeasure)} for an explanation; convenience
+	 * method that effectively calls adjustStorage with the rates given over a single tick.
+	 * @param inflow
+	 * @param outflow
+	 */
 	public abstract void adjustStorageOneTick(List<PipedRate<TickMeasure>> inflow, 
 			List<PipedRate<TickMeasure>> outflow);
+	
+	/**
+	 * Gets the *instantaneous* storage as it stands after any in-progress adjustments resolve.
+	 * This may block depending on implementations.
+	 * 
+	 * @return List of AdvItemStack objects indicating the current storage.
+	 */
 	public abstract List<AdvItemStack> getStorage();
 	
+	/**
+	 * Emulates, but does not apply, the effect of the inflow and outflow over time (as described in
+	 * {@link #adjustStorage(List, List, TimeMeasure)}) on this storage. The resolution
+	 * of all pending in-progress adjustments must occur before this emulation can occur; thus 
+	 * blocking may be necessary. Does not actually alter the internal storage, but returns a
+	 * representation of the internal storage as it would appear should this adjustment be applied.
+	 * 
+	 * @param inflow
+	 * @param outflow
+	 * @param time
+	 * @return an emulation of {@link #getStorage()} as if the adjustment had occurred. 
+	 */
+	public abstract <T extends TimeMeasure<?>> List<AdvItemStack> emulateAdjustStorage(
+			List<PipedRate<T>> inflow, List<PipedRate<T>> outflow, T time);
+	
+	/**
+	 * Given an inflow and outflow, returns the amount of time this can be sustained before
+	 * (1) the Storage runs out of space or (2) the Storage runs out of items. 
+	 * <br>
+	 * If the time returned has a length of 0, means these flowrates cannot be sustained at all.
+	 * <br>
+	 * If the time returned has a length of {@link Double#POSITIVE_INFINITY}, means this flowrate
+	 * can be sustained indefinitely.
+	 *  
+	 * @param inflow
+	 * @param outflow
+	 * @return
+	 */
+	public abstract <T extends TimeMeasure<?>> T timeFitAdjustStorage(
+			List<PipedRate<T>> inflow, List<PipedRate<T>> outflow);
+	
+	/**
+	 * Some types of gadgets have "private" or internal storage. It is not accessible
+	 * to players, but can serve as a sink for inputs or a source for outputs.
+	 * 
+	 * @return true if this gadget has a private storage, false otherwise.
+	 */
 	public abstract boolean hasPrivateStorage();
 	public abstract <T extends TimeMeasure<?>> void adjustPrivateStorage(List<PipedRate<T>> inflow,
 			List<PipedRate<T>> outflow, T time);
 	public abstract void adjustPrivateStorageOneTick(List<PipedRate<TickMeasure>> inflow, 
 			List<PipedRate<TickMeasure>> outflow);
 	public abstract List<AdvItemStack> getPrivateStorage();
+
+	public abstract <T extends TimeMeasure<?>> List<AdvItemStack> emulateAdjustPrivateStorage(
+			List<PipedRate<T>> inflow, List<PipedRate<T>> outflow, T time);
 	
+	public abstract <T extends TimeMeasure<?>> T timeFitAdjustPrivateStorage(
+			List<PipedRate<T>> inflow, List<PipedRate<T>> outflow);
 }

@@ -10,31 +10,27 @@ import com.programmerdan.minecraft.contraptions.util.AdvItemStack;
  *   
  * @author ProgrammerDan
  * @since 1.0.0 September 2015
- * @param <T extends TimeMeasure<?>> The actual time measure of this rate.
  */
-public abstract class PipedRate<T extends TimeMeasure<?>> {
+public abstract class PipedRate {
 	
 	public abstract AdvItemStack getResource();
 	
-	public abstract T getTime();
-	
-	/**
-	 * Remap this rate into a new time measure. Does not change <i>this</i> but returns a 
-	 *   new PipedRate.
-	 *   
-	 * @param clazz
-	 * @param measure
-	 * @return
-	 */
-	public abstract <Z extends TimeMeasure<?>, R extends PipedRate<Z>> R reRate(Class<R> clazz, Z measure);
+	public abstract TimeMeasure getTime();
 	
 	/**
 	 * Gets this resource count as if over a new time; doesn't change <i>this</i> but returns
 	 *   an AdvItemStack remapped either larger or smaller based on newMeasure. The new measure
 	 *   must be of the same type as the old measure.
 	 *   
-	 * @param newMeasure
-	 * @return
+	 * @param newTime the new time length
+	 * @return the new ItemStack resized to fit the time, based on underlying rate.
 	 */
-	public abstract AdvItemStack getResourceOverNewTime(T newMeasure);
+	public abstract AdvItemStack getResourceOverTime(TimeMeasure newTime);
+	
+	/**
+	 * Remaps this rate's ratio onto a new time.
+	 * @param newTime the new TimeMeasure to map towards
+	 * @return a new PipedRate having the same ratio as the original, but against the new time.
+	 */
+	public abstract PipedRate reRate(TimeMeasure newTime);
 }

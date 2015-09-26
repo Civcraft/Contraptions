@@ -3,7 +3,6 @@ package com.programmerdan.minecraft.contraptions.gadget;
 import java.util.List;
 
 import com.programmerdan.minecraft.contraptions.time.TimeMeasure;
-import com.programmerdan.minecraft.contraptions.time.TickMeasure;
 import com.programmerdan.minecraft.contraptions.rate.PipedRate;
 
 /**
@@ -61,28 +60,28 @@ public interface GadgetInput {
 	public boolean hasInputPull();
 
 	/**
-	 * Gets the amount of pull this GadgetInput exerts over a time period, with unit and
-	 * length defined by an instance of a subclass of {@link TimeMeasure}.
+	 * Gets the amount of pull this GadgetInput exerts over a time period, with
+	 * length defined by an instance of {@link TimeMeasure}.
 	 * 
 	 * Implementations are free to use whatever information is available to accurately
 	 * determine the pull over the requested time period.
 	 *
-	 * @param overTime The {@link TimeMeasure} subclass instance indicating how long to
+	 * @param overTime The {@link TimeMeasure} instance indicating how long to
 	 *   calculate the pull.
-	 * @return a List of {@link PipedRate} instances indicating an ItemStack rate over a
-	 *   time period as a TimeMeasure.
+	 * @return a List of {@link PipedRate} instances indicating an ItemStack rate over the
+	 *   time period.
 	 */
-	public <T extends TimeMeasure<?>> List<PipedRate<T>> getInputPull(T overTime);
+	public List<PipedRate> getInputPull(TimeMeasure overTime);
 
 	/**
-	 * Gets the amount of instantaneous (per tick) pull this GadgetInput exerts. The basic
-	 * intent is that it should map to getInputPull(TickMeasure(1)), but it could be used
+	 * Gets the amount of instantaneous pull this GadgetInput exerts. The basic
+	 * intent is that it should map to getInputPull(TimeMeasure(1)), but it could be used
 	 * in other ways -- carefully.
 	 *
 	 * @return a List of {@link PipedRate} instances indicating an ItemStack rate over a
 	 *   single TickMeasure unit (unless overridden).
 	 */
-	public List<PipedRate<TickMeasure>> getInputPullPerTick();
+	public List<PipedRate> getInstantInputPull();
 
 	/**
 	 * Gets if this GadgetInput has a maximum input rate. Not having a maximum input rate
@@ -100,21 +99,21 @@ public interface GadgetInput {
 	 * result of OutputPushs over a particular time period. Any input exceeding this
 	 * maximum should be ignored by Gadget algorithm managers.
 	 *
-	 * @param overTime The {@link TimeMeasure} subclass instance indicating how long to
+	 * @param overTime The {@link TimeMeasure} instance indicating how long to
 	 *   calculate the maximum.
 	 * @return a List of {@link PipedRate} instances indicating an ItemStack rate over a
-	 *   time period as a TimeMeasure. Will typically be a special kind of ItemStack 
+	 *   time period. Will typically be a special kind of ItemStack 
 	 *   indicating any item is accepted, but can allow for more complex scenarios
 	 *   involving special rate limits per item type.
 	 */
-	public <T extends TimeMeasure<?>> List<PipedRate<T>> getMaximumInput(T overTime);
+	public List<PipedRate> getMaximumInput(TimeMeasure overTime);
 
 	/**
-	 * Gets the amount of instantaneous (per tick) input this GadgetInput can sustain
+	 * Gets the amount of instantaneous nput this GadgetInput can sustain
 	 * as a result of Satisfiers of InputPulls and as a result of OutputPushs.
 	 * 
 	 * @return A List of {@link PipedRate} instances indicating an ItemStack rate over a
-	 *   single TickMeasure unit (unless overridden).
+	 *   single TimeMeasure unit.
 	 */
-	public List<PipedRate<TickMeasure>> getMaximumInputPerTick();
+	public List<PipedRate> getMaximumInstantInput();
 }

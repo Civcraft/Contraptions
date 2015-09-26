@@ -61,29 +61,29 @@ public interface GadgetOutput {
 	public boolean hasOutputPush();
 
 	/**
-	 * Gets the amount of push this GadgetOutput exerts over a time period, with unit and
-	 * length defined by an instance of a subclass of {@link TimeMeasure}.
+	 * Gets the amount of push this GadgetOutput exerts over a time period, with
+	 * length defined by an instance of {@link TimeMeasure}.
 	 * 
 	 * Implementations are free to use whatever information is available to accurately
 	 * determine the push over the requested time period.
 	 * @param <T>
 	 *
-	 * @param overTime The {@link TimeMeasure} subclass instance indicating how long to
+	 * @param overTime The {@link TimeMeasure} instance indicating how long to
 	 *   calculate the push.
 	 * @return a List of {@link PipedRate} instances indicating an ItemStack rate over a
-	 *   time period as a TimeMeasure.
+	 *   time period.
 	 */
-	public <T extends TimeMeasure<?>> List<PipedRate<T>> getOutputPush(T overTime);
+	public List<PipedRate> getOutputPush(TimeMeasure overTime);
 
 	/**
-	 * Gets the amount of instantaneous (per tick) push this GadgetOutput exerts. The basic
-	 * intent is that it should map to getOutputPush(TickMeasure(1)), but it could be used
+	 * Gets the amount of instantaneous push this GadgetOutput exerts. The basic
+	 * intent is that it should map to getOutputPush(TimeMeasure(1)), but it could be used
 	 * in other ways -- carefully.
 	 *
 	 * @return a List of {@link PipedRate} instances indicating an ItemStack rate over a
-	 *   single TickMeasure unit (unless overridden).
+	 *   single TimeMeasure unit (unless overridden).
 	 */
-	public List<PipedRate<TickMeasure>> getOutputPushPerTick();
+	public List<PipedRate> getInstantOutputPush();
 
 	/**
 	 * Gets if this GadgetOutput has a maximum output rate. Not having a maximum output rate
@@ -101,21 +101,21 @@ public interface GadgetOutput {
 	 * result of InputPulls over a particular time period. Any output exceeding this
 	 * maximum should be ignored by Gadget algorithm managers.
 	 *
-	 * @param overTime The {@link TimeMeasure} subclass instance indicating how long to
+	 * @param overTime The {@link TimeMeasure} instance indicating how long to
 	 *   calculate the maximum.
 	 * @return a List of {@link PipedRate} instances indicating an ItemStack rate over a
 	 *   time period as a TimeMeasure. Will typically be a special kind of ItemStack 
 	 *   indicating any item is accepted, but can allow for more complex scenarios
 	 *   involving special rate limits per item type.
 	 */
-	public <T extends TimeMeasure<?>> List<PipedRate<T>> getMaximumOutput(T overTime);
+	public List<PipedRate> getMaximumOutput(TimeMeasure overTime);
 
 	/**
-	 * Gets the amount of instantaneous (per tick) input this GadgetOutput can sustain
+	 * Gets the amount of instantaneous input this GadgetOutput can sustain
 	 * as a result of Satisfiers of OutputPushes and as a result of InputPulls.
 	 * 
 	 * @return A List of {@link PipedRate} instances indicating an ItemStack rate over a
-	 *   single TickMeasure unit (unless overridden).
+	 *   single TimeMeasure unit (unless overridden).
 	 */
-	public List<PipedRate<TickMeasure>> getMaximumOutputPerTick();
+	public List<PipedRate> getMaximumInstantOutput();
 }

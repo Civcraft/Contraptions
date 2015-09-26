@@ -44,20 +44,20 @@ public abstract class GadgetBase implements GadgetInput, GadgetOutput {
 	 * 
 	 * @param inflow The List of PipedRate elements flowing into the storage, as measured over time. Assumption is that flowrate
 	 *   is fixed for this period; e.g. PipedRate is not a complex function, but a constant, over the given time.
-	 * @param outflow The List of PipedRate elements flowing out of the storage, as measued over time.
+	 * @param outflow The List of PipedRate elements flowing out of the storage, as measured over time.
 	 * @param time The amount of time that elements flow in and out of the storage, given the PipedRates.
 	 */
-	public abstract <T extends TimeMeasure<?>> void adjustStorage(List<PipedRate<T>> inflow,
-			List<PipedRate<T>> outflow, T time);
+	public abstract void adjustStorage(List<PipedRate> inflow,
+			List<PipedRate> outflow, TimeMeasure time);
 	
 	/**
 	 * See {@link #adjustStorage(List, List, TimeMeasure)} for an explanation; convenience
-	 * method that effectively calls adjustStorage with the rates given over a single tick.
+	 * method that effectively calls adjustStorage with the rates given over a single instant.
 	 * @param inflow
 	 * @param outflow
 	 */
-	public abstract void adjustStorageOneTick(List<PipedRate<TickMeasure>> inflow, 
-			List<PipedRate<TickMeasure>> outflow);
+	public abstract void adjustStorageInstant(List<PipedRate> inflow, 
+			List<PipedRate> outflow);
 	
 	/**
 	 * Gets the *instantaneous* storage as it stands after any in-progress adjustments resolve.
@@ -79,8 +79,8 @@ public abstract class GadgetBase implements GadgetInput, GadgetOutput {
 	 * @param time
 	 * @return an emulation of {@link #getStorage()} as if the adjustment had occurred. 
 	 */
-	public abstract <T extends TimeMeasure<?>> List<AdvItemStack> emulateAdjustStorage(
-			List<PipedRate<T>> inflow, List<PipedRate<T>> outflow, T time);
+	public abstract List<AdvItemStack> emulateAdjustStorage(
+			List<PipedRate> inflow, List<PipedRate> outflow, TimeMeasure time);
 	
 	/**
 	 * Given an inflow and outflow, returns the amount of time this can be sustained before
@@ -95,8 +95,8 @@ public abstract class GadgetBase implements GadgetInput, GadgetOutput {
 	 * @param outflow
 	 * @return
 	 */
-	public abstract <T extends TimeMeasure<?>> T timeFitAdjustStorage(
-			List<PipedRate<T>> inflow, List<PipedRate<T>> outflow);
+	public abstract TimeMeasure timeFitAdjustStorage(
+			List<PipedRate> inflow, List<PipedRate> outflow);
 	
 	/**
 	 * Some types of gadgets have "private" or internal storage. It is not accessible
@@ -105,15 +105,15 @@ public abstract class GadgetBase implements GadgetInput, GadgetOutput {
 	 * @return true if this gadget has a private storage, false otherwise.
 	 */
 	public abstract boolean hasPrivateStorage();
-	public abstract <T extends TimeMeasure<?>> void adjustPrivateStorage(List<PipedRate<T>> inflow,
-			List<PipedRate<T>> outflow, T time);
-	public abstract void adjustPrivateStorageOneTick(List<PipedRate<TickMeasure>> inflow, 
-			List<PipedRate<TickMeasure>> outflow);
+	public abstract void adjustPrivateStorage(List<PipedRate> inflow,
+			List<PipedRate> outflow, TimeMeasure time);
+	public abstract void adjustPrivateStorageInstant(List<PipedRate> inflow, 
+			List<PipedRate> outflow);
 	public abstract List<AdvItemStack> getPrivateStorage();
 
-	public abstract <T extends TimeMeasure<?>> List<AdvItemStack> emulateAdjustPrivateStorage(
-			List<PipedRate<T>> inflow, List<PipedRate<T>> outflow, T time);
+	public abstract List<AdvItemStack> emulateAdjustPrivateStorage(
+			List<PipedRate> inflow, List<PipedRate> outflow, TimeMeasure time);
 	
-	public abstract <T extends TimeMeasure<?>> T timeFitAdjustPrivateStorage(
-			List<PipedRate<T>> inflow, List<PipedRate<T>> outflow);
+	public abstract TimeMeasure timeFitAdjustPrivateStorage(
+			List<PipedRate> inflow, List<PipedRate> outflow);
 }

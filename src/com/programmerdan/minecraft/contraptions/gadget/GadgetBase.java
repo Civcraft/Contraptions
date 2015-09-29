@@ -3,7 +3,6 @@ package com.programmerdan.minecraft.contraptions.gadget;
 import java.util.List;
 
 import com.programmerdan.minecraft.contraptions.rate.PipedRate;
-import com.programmerdan.minecraft.contraptions.time.TickMeasure;
 import com.programmerdan.minecraft.contraptions.time.TimeMeasure;
 import com.programmerdan.minecraft.contraptions.util.AdvItemStack;
 

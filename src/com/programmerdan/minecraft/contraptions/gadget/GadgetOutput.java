@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.programmerdan.minecraft.contraptions.rate.PipedRate;
 import com.programmerdan.minecraft.contraptions.time.TimeMeasure;
-import com.programmerdan.minecraft.contraptions.time.TickMeasure;
 
 /**
  * Meant to be the "Output side" of a Gadget, includes methods to deal with

@@ -11,11 +11,39 @@ import com.programmerdan.minecraft.contraptions.util.AdvItemStack;
  * @author ProgrammerDan
  * @since 1.0.0 September 2015
  */
-public abstract class PipedRate {
+public class PipedRate {
+
+	/**
+	 * Constructs a new PipedRate.
+	 * 
+	 * @param resource The item stack resource.
+	 * @param time the TimeMeasure.
+	 */
+	public PipedRate(AdvItemStack resource, TimeMeasure time) {
+		this.resource = resource;
+		this.time = time;
+	}
 	
-	public abstract AdvItemStack getResource();
+	private AdvItemStack resource;
+	private TimeMeasure time;
 	
-	public abstract TimeMeasure getTime();
+	/**
+	 * Gets the total resources piped in TimeMeasure time as represented by this rate.
+	 * 
+	 * @return An Advanced Item Stack containing an appropriate number of items 
+	 */
+	public AdvItemStack getResource() {
+		return resource;
+	}
+	
+	/**
+	 * Gets the length of time over which the resource flow
+	 * 
+	 * @return the TimeMeasure length of time
+	 */
+	public TimeMeasure getTime() {
+		return time;
+	}
 	
 	/**
 	 * Gets this resource count as if over a new time; doesn't change <i>this</i> but returns
@@ -25,12 +53,22 @@ public abstract class PipedRate {
 	 * @param newTime the new time length
 	 * @return the new ItemStack resized to fit the time, based on underlying rate.
 	 */
-	public abstract AdvItemStack getResourceOverTime(TimeMeasure newTime);
+	public AdvItemStack getResourceOverTime(TimeMeasure newTime) {
+		double ratio = (time.getLength() == 0 || newTime.getLength() == 0) ? 0.0 : newTime.getLength() / time.getLength();
+		
+		AdvItemStack advNew = resource.clone();
+		advNew.setSize(ratio * resource.getSize());
+		return advNew;
+	}
 	
 	/**
 	 * Remaps this rate's ratio onto a new time.
 	 * @param newTime the new TimeMeasure to map towards
 	 * @return a new PipedRate having the same ratio as the original, but against the new time.
 	 */
-	public abstract PipedRate reRate(TimeMeasure newTime);
+	public PipedRate reRate(TimeMeasure newTime) {
+		AdvItemStack newStack = this.getResourceOverTime(newTime);
+		
+		return new PipedRate(newStack, newTime);
+	}
 }

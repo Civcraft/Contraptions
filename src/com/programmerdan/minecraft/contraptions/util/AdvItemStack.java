@@ -1,11 +1,11 @@
 package com.programmerdan.minecraft.contraptions.util;
 
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.material.MaterialData;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,44 +16,23 @@ import java.util.Map;
  * @author ProgrammerDan
  * @since 1.0.0 September 2015
  */
-public class AdvItemStack implements Cloneable{
+public class AdvItemStack implements Cloneable, ConfigurationSerializable{
 	private double size;
-	private Material type;
-	private short damage;
-	private Map<Enchantment, Integer> safeEnch;
-	private Map<Enchantment, Integer> unsafeEnch;
-	private ItemMeta meta;
-	private MaterialData data;
+	private ItemStack type;
+	private AdvancedMeta meta;
 	
-	public AdvItemStack(Material type, double size, short damage,
-			Map<Enchantment, Integer> optionalEnchantments,
-			Map<Enchantment, Integer> optionalUnsafeEnchantments,
-			ItemMeta optionalMeta, MaterialData optionalData) {
-		setup(type, size, damage, optionalEnchantments, optionalUnsafeEnchantments,
-				optionalMeta, optionalData);
-	}
-	
-	private void setup(Material type, double size, short damage,
-			Map<Enchantment, Integer> optionalEnchantments,
-			Map<Enchantment, Integer> optionalUnsafeEnchantments,
-			ItemMeta optionalMeta, MaterialData optionalData) {
+	public AdvItemStack(ItemStack type, double size, AdvancedMeta meta) {
 		this.type = type;
 		this.size = size;
-		this.damage = damage;
-		this.safeEnch = (optionalEnchantments == null) ? new HashMap<Enchantment, Integer>() : optionalEnchantments;
-		this.unsafeEnch = (optionalUnsafeEnchantments == null) ? new HashMap<Enchantment, Integer>() : optionalUnsafeEnchantments;
-		this.meta = optionalMeta;
-		this.data = optionalData;
+		this.meta = meta;
 	}
 	
-	public AdvItemStack(Material type, double size, short damage) {
-		setup(type, size, damage, null, null,
-				null, null);		
+	public AdvItemStack(ItemStack type, double size) {
+		this(type, size, null);
 	}
 	
-	public AdvItemStack(Material type, double size) {
-		setup(type, size, (short) 0, null, null,
-				null, null);
+	public AdvItemStack(ItemStack type) {
+		this(type, 1.0, null);
 	}
 	
 	public double getSize() {
@@ -62,11 +41,91 @@ public class AdvItemStack implements Cloneable{
 	
 	@Override
 	public AdvItemStack clone() {
-		return new AdvItemStack(this.type, this.size, this.damage, this.safeEnch, this.unsafeEnch, 
-				this.meta, this.data);
+		return new AdvItemStack(this.type, this.size, (AdvancedMeta) this.meta.clone());
+	}
+	
+	/**
+	 * Turns this advanced Item Stack into a list of Item Stacks.
+	 * 
+	 * @return a List of ItemStacks of the correct type, with any metadata applied.
+	 */
+	public List<ItemStack> realize() {
+		List<ItemStack> result = new LinkedList<ItemStack>();
+		
+		int ism = type.getMaxStackSize();
+		ItemStack is = type.clone();
+		if (getMeta() != null) {
+			is = getMeta().apply(is);
+		}
+		double csize = size;
+		while (csize > 0) {
+			if (csize < ism) {
+				is.setAmount((int) Math.floor(csize));
+				result.add(is);
+			} else {
+				is.setAmount(ism);
+				result.add(is);
+			}
+			csize -= ism;
+			is = is.clone();
+		}
+		
+		return result;
 	}
 
 	public void setSize(double size) {
 		this.size = size;
+	}
+	
+	public ItemStack getType() {
+		return this.type;
+	}
+	
+	public void setType(ItemStack type) {
+		this.type = type;
+	}
+	
+	public AdvancedMeta getMeta() {
+		return this.meta;
+	}
+	
+	public void setMeta(AdvancedMeta meta) {
+		this.meta = meta;
+	}
+
+	@Override
+	public Map<String, Object> serialize() {
+		Map<String, Object> result = new LinkedHashMap<String, Object>();
+		
+		if (getType() != null) {
+			result.put("type", getType());
+		}
+		
+		if (getMeta() != null) {
+			result.put("meta", getMeta());
+		}
+		
+		result.put("size", getSize());
+		
+		return result;
+	}
+	
+	public static AdvItemStack deserialize(Map<String, Object> serial) {
+		ItemStack is = null;
+		if (serial.containsKey("type")) {
+			is = (ItemStack) serial.get("type");
+		}
+		AdvancedMeta am = null;
+		if (serial.containsKey("meta")) {
+			am = (AdvancedMeta) serial.get("meta");
+		}
+		double sz = 1.0d;
+		if (serial.containsKey("size")) {
+			sz = ( (Number) serial.get("size") ).doubleValue();
+		}
+		
+		AdvItemStack result = new AdvItemStack(is, sz, am);
+		
+		return result;
 	}
 }

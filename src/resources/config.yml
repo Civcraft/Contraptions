@@ -1,0 +1,38 @@
+# To disable database DAO, set driver: none. All output will then be to file, exclusively.
+# Don't mess with these lightly. 
+
+configuration_file_version: 1
+
+# Turns on console output for certain backend tasks (such as asynch commits) and statistics
+debug: true
+
+# Controls count and sharing strategy of contraption monitors; cannot be changed at runtime
+monitor_count: 4
+monitor_strategy: round_robin_fair
+
+dao:
+  database:
+    driver: mysql
+    host:
+    port: 2306
+    username:
+    password:
+    database: contraptions
+    schema:
+  file:
+    base: Contraptions/
+    max_file_size: 262144000
+    max_io_rate: 1048576
+    io_chunk_size: 4096
+  cache:
+    gadgets: 100000
+    states: 10000
+
+# Controls monitor defaults, applies to all monitors
+monitor:
+  update_frequency: 10
+  run_unloaded: true
+  # if set true, splits gadgets/contraptions into pools that are updated every tick in a rolling fashion
+  # might help prevent sudden lag spikes
+  rolling_updates: false
+

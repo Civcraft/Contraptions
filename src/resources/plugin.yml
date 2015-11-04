@@ -1,0 +1,29 @@
+name: ${project.name}
+main: com.programmerdan.minecraft.contraptions.Contraptions
+author: ProgrammerDan
+authors: [Maxopoly, spacefountain]
+version: ${project.version}
+description: Contraptions is the next generation of server-side player constructed technology for Minecraft
+website: https://github.com/Civcraft/Contraptions
+load: POSTWORLD
+depend: [CivModCore, NameLayer, Citadel]
+softdepend: [SkilUp]
+commands:
+   contraptions:
+      description: Contraptions is the next generation of server-side technology for Minecraft
+      usage: To view help, use /contraptions help
+   contraptions help:
+      description: View help on Contraptions commands
+permissions:
+    Contraptions.*:
+      description: Gives access to all Contraptions commands
+      default: op
+      children:
+        Contraptions.player: true
+        Contraptions.admin: true
+    Contraptions.player:
+      description: Player focused commands, such as entering contraption mode
+      default: true
+    Contraptions.admin:
+      description: Admin focused commands, such as deep inspection of a contraption, debug mode, etc.
+      default: op

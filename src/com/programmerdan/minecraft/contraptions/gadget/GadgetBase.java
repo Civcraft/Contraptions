@@ -2,6 +2,9 @@ package com.programmerdan.minecraft.contraptions.gadget;
 
 import java.util.List;
 
+import org.bukkit.Location;
+import org.bukkit.Material;
+
 import com.programmerdan.minecraft.contraptions.rate.PipedRate;
 import com.programmerdan.minecraft.contraptions.time.TimeMeasure;
 import com.programmerdan.minecraft.contraptions.util.AdvItemStack;
@@ -115,4 +118,24 @@ public abstract class GadgetBase implements GadgetInput, GadgetOutput {
 	
 	public abstract TimeMeasure timeFitAdjustPrivateStorage(
 			List<PipedRate> inflow, List<PipedRate> outflow);
+	
+	/* TODO: 
+	 *   * Gadget creation helper from configuration (Factory preferred)
+	 *     * Factory should generate Times/Pipedrates
+	 *     * Factory should figure out what kind of Gadget and wire it up
+	 *   * Need location, type, mode indicator
+	 *     * Active
+	 *     * Inactive
+	 *   * UI stubs for interaction and control
+	 *   * save structure/serialization structure for contraption
+	 *     * should preserve momentary state
+	 *     * for server restart
+	 *   * consider how to run unloaded contraptions
+	 *     * fast-forward on load? **** 
+	 *     * always active?
+	 *     * split the difference? could need both.
+	 */
+	
+	private final Location location;
+	private final Material type;
 }

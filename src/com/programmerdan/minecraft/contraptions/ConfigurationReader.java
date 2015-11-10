@@ -19,7 +19,13 @@ public class ConfigurationReader {
 		Contraptions.instance().reloadConfig();
 		FileConfiguration conf = Contraptions.instance().getConfig();
 
-		// TODO: Read config.
+		if (ContraptionsConfiguration.check_version(conf.getDouble("configuration_file_version"))) {
+			ContraptionsConfiguration config = new ContraptionsConfiguration();
 
+			config.setDebug( conf.getBoolean("debug", false ) );
+		
+			return true;
+		}
+		return false;
 	}
 }

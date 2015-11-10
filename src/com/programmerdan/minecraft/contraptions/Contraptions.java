@@ -17,8 +17,6 @@ public class Contraptions extends JavaPlugin {
 	private static CommandHandler commandHandler;
 	private static Logger logger;
 	private static JavaPlugin plugin;
-	private static boolean enabled = true;
-	private static boolean debug = false;
 	private static ContraptionsConfiguration config;
 
 	public static CommandHandler commandHandler() {
@@ -33,24 +31,12 @@ public class Contraptions extends JavaPlugin {
 		return Contraptions.plugin;
 	}
 
-	public static boolean isEnabled() {
-		return Contraptions.enabled;
-	}
-
 	public static boolean isDebug() {
-		return Contraptions.debug;
+		return Contraptions.config.isDebug();
 	}
 
 	public static ContraptionsConfiguration config() {
 		return Contraptions.config;
-	}
-
-	public static void setEnabled(boolean status) {
-		Contraptions.enabled = status;
-	}
-
-	public static void setDebug(boolean debug) {
-		Contraptions.debug = debug;
 	}
 
 	@Override

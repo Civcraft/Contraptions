@@ -6,10 +6,6 @@ configuration_file_version: 1
 # Turns on console output for certain backend tasks (such as asynch commits) and statistics
 debug: true
 
-# Controls count and sharing strategy of contraption monitors; cannot be changed at runtime
-monitor_count: 4
-monitor_strategy: round_robin_fair
-
 dao:
   database:
     driver: mysql
@@ -27,12 +23,19 @@ dao:
   cache:
     gadgets: 100000
     states: 10000
+    # Eviction strategy: least_accessed, oldest, smallest, 
+    strategy: least_accessed
 
 # Controls monitor defaults, applies to all monitors
 monitor:
+  # Number of monitor threads to run
+  count: 4
+  # How to partition contraptions between monitors -- round_robin, round_robin_fair, random
+  strategy: round_robin
+  # How often to update each contraption, in ticks. When a contraption is updated is controlled by this, count, strategy, and rolling_updates
   update_frequency: 10
+  # Should a fully unloaded contraption be run -- false, means no, true means yes.
   run_unloaded: true
-  # if set true, splits gadgets/contraptions into pools that are updated every tick in a rolling fashion
-  # might help prevent sudden lag spikes
+  # if set true, splits gadgets/contraptions into pools that are updated every tick in a rolling fashion -- might help prevent sudden lag spikes
   rolling_updates: false
 

@@ -6,6 +6,9 @@ configuration_file_version: 1
 # Turns on console output for certain backend tasks (such as asynch commits) and statistics
 debug: true
 
+# Gadget "base templates" defining type, costs, and upgrades are in flat files
+gadget_template_folder: Contraptions/gadgets/
+
 dao:
   database:
     driver: mysql
@@ -15,16 +18,11 @@ dao:
     password:
     database: contraptions
     schema:
-  file:
-    base: Contraptions/
-    max_file_size: 262144000
-    max_io_rate: 1048576
-    io_chunk_size: 4096
   cache:
     gadgets: 100000
     states: 10000
-    # Eviction strategy: least_accessed, oldest, smallest, 
-    strategy: least_accessed
+    # Eviction strategy: lru, mru, lfu, mfu, random, smallest, largest 
+    strategy: lfu
 
 # Controls monitor defaults, applies to all monitors
 monitor:

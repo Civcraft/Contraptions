@@ -138,4 +138,9 @@ public abstract class GadgetBase implements GadgetInput, GadgetOutput {
 	
 	private final Location location;
 	private final Material type;
+	
+	protected GadgetBase(Location location, Material type) {
+		 this.location = location;
+		 this.type = type;
+	}
 }

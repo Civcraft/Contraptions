@@ -12,27 +12,48 @@ import java.util.Map;
  * Flyweight wrapper for Bukkit ItemStack allowing for lightweight resource and item
  * representation. Allows for virtual resources to be realized and for real resources
  * to be virtualized.
+ * 
+ * TODO: Implement comparison "override" of ItemStack to cover includeSubtypes.
  *  
  * @author ProgrammerDan
  * @since 1.0.0 September 2015
  */
 public class AdvItemStack implements Cloneable, ConfigurationSerializable{
 	private double size;
+	private boolean includeSubtypes;
 	private ItemStack type;
 	private AdvancedMeta meta;
 	
-	public AdvItemStack(ItemStack type, double size, AdvancedMeta meta) {
+	public AdvItemStack(ItemStack type, boolean includeSubtypes, double size, AdvancedMeta meta) {
+		this.includeSubtypes = includeSubtypes;
 		this.type = type;
 		this.size = size;
 		this.meta = meta;
 	}
 	
+	public AdvItemStack(ItemStack type, boolean includeSubtypes, double size) {
+		this(type, includeSubtypes, size, null);
+	}
+	
 	public AdvItemStack(ItemStack type, double size) {
-		this(type, size, null);
+		this(type, false, size, null);
+	}
+	
+	public AdvItemStack(ItemStack type, boolean includeSubtypes) {
+		this(type, includeSubtypes, 1.0, null);
 	}
 	
 	public AdvItemStack(ItemStack type) {
-		this(type, 1.0, null);
+		this(type, false, 1.0, null);
+	}
+	
+	public AdvItemStack(Map<String, Object> serial) {
+		AdvItemStack ais = AdvItemStack.deserialize(serial);
+		this.setType(ais.getType());
+		this.setIncludeSubtypes(ais.getIncludeSubtypes());
+		this.setSize(ais.getSize());
+		this.setMeta(ais.getMeta());
+		ais = null;
 	}
 	
 	public double getSize() {
@@ -41,7 +62,7 @@ public class AdvItemStack implements Cloneable, ConfigurationSerializable{
 	
 	@Override
 	public AdvItemStack clone() {
-		return new AdvItemStack(this.type, this.size, (AdvancedMeta) this.meta.clone());
+		return new AdvItemStack(this.type, this.includeSubtypes, this.size, (AdvancedMeta) this.meta.clone());
 	}
 	
 	/**
@@ -77,6 +98,14 @@ public class AdvItemStack implements Cloneable, ConfigurationSerializable{
 		this.size = size;
 	}
 	
+	public boolean getIncludeSubtypes() {
+		return this.includeSubtypes;
+	}
+	
+	public void setIncludeSubtypes(boolean includeSubtypes) {
+		this.includeSubtypes = includeSubtypes; 
+	}
+	
 	public ItemStack getType() {
 		return this.type;
 	}
@@ -101,6 +130,8 @@ public class AdvItemStack implements Cloneable, ConfigurationSerializable{
 			result.put("type", getType());
 		}
 		
+		result.put("includeSubtypes", getIncludeSubtypes());
+		
 		if (getMeta() != null) {
 			result.put("meta", getMeta());
 		}
@@ -115,6 +146,10 @@ public class AdvItemStack implements Cloneable, ConfigurationSerializable{
 		if (serial.containsKey("type")) {
 			is = (ItemStack) serial.get("type");
 		}
+		boolean inc = false;
+		if (serial.containsKey("includeSubtypes")) {
+			inc = (Boolean) serial.get("includeSubtypes");
+		}
 		AdvancedMeta am = null;
 		if (serial.containsKey("meta")) {
 			am = (AdvancedMeta) serial.get("meta");
@@ -124,8 +159,12 @@ public class AdvItemStack implements Cloneable, ConfigurationSerializable{
 			sz = ( (Number) serial.get("size") ).doubleValue();
 		}
 		
-		AdvItemStack result = new AdvItemStack(is, sz, am);
+		AdvItemStack result = new AdvItemStack(is, inc, sz, am);
 		
 		return result;
+	}
+	
+	public static AdvItemStack valueOf(Map<String, Object> serial) {
+		return AdvItemStack.deserialize(serial);
 	}
 }

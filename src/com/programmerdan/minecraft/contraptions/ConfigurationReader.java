@@ -1,14 +1,7 @@
 package com.programmerdan.minecraft.contraptions;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
-import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -69,7 +62,25 @@ public class ConfigurationReader {
 				
 				ConfigurationSection databaseConf = daoConf.getConfigurationSection("database");
 				
-				// TODO finish
+				ContraptionsConfiguration.DaoConfig dao = config.getDaoConfig();
+				
+				if (databaseConf == null) {
+					log.log(Level.WARNING, "Database section not found in config, disabling");
+					dao.setActive(false);
+				} else {
+					dao.setActive(databaseConf.getBoolean("active", false));
+				}
+				
+				if (dao.isActive()) {
+					// only load if active.
+					dao.setHost(databaseConf.getString("host"));
+					dao.setPort(databaseConf.getInt("port"));
+					dao.setDriver(Driver.valueOf(databaseConf.getString("driver")));
+					dao.setDatabase(databaseConf.getString("database"));
+					dao.setSchema(databaseConf.getString("schema"));
+					dao.setUsername(databaseConf.getString("username"));
+					dao.setPassword(databaseConf.getString("password"));
+				}
 		
 				return true;
 			} catch (IllegalArgumentException iae) {

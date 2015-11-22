@@ -29,6 +29,15 @@ public class AdvancedMeta implements Cloneable, ConfigurationSerializable {
 		retrievable = true;
 	}
 	
+	public AdvancedMeta(Map<String, Object> serial) {
+		AdvancedMeta a = AdvancedMeta.deserialize(serial);
+		this.setCreationTime(a.getCreationTime());
+		this.setPlayerUUID(a.getPlayerUUID());
+		this.setRetrievable(a.getRetrievable());
+		this.setNameOverride(a.getNameOverride());
+		a = null;
+	}
+	
 	/**
 	 * Internal method, applies this meta to the underlying ItemStack.
 	 * 
@@ -114,6 +123,10 @@ public class AdvancedMeta implements Cloneable, ConfigurationSerializable {
 		}
 		
 		return result;
+	}
+	
+	public static AdvancedMeta valueOf(Map<String, Object> serial) {
+		return AdvancedMeta.deserialize(serial);
 	}
 	
 	@Override

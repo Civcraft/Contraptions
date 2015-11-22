@@ -6,8 +6,8 @@ public class ContraptionsConfiguration {
 	public ContraptionsConfiguration() {
 		debug = false;
 		setMonitor(new MonitorBase());
-		dao = new DaoConfig();
-		cache = new CacheConfig();
+		setDaoConfig(new DaoConfig());
+		setCacheConfig(new CacheConfig());
 	}
 	
 	public static final double CONFIG_VERSION = 1.0d;
@@ -59,6 +59,7 @@ public class ContraptionsConfiguration {
 	}
 	
 	class DaoConfig {
+		private boolean active;
 		private String host;
 		private String username;
 		private transient String password;
@@ -67,6 +68,14 @@ public class ContraptionsConfiguration {
 		private int port;
 		private Driver driver;
 
+		public void setActive(boolean active) {
+			this.active = active;
+		}
+		
+		public boolean isActive() {
+			return this.active;
+		}
+		
 		public void setHost(String host) {
 			this.host = host;
 		}

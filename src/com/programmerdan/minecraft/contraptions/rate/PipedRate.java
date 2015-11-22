@@ -1,5 +1,10 @@
 package com.programmerdan.minecraft.contraptions.rate;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+
 import com.programmerdan.minecraft.contraptions.time.TimeMeasure;
 import com.programmerdan.minecraft.contraptions.util.AdvItemStack;
 
@@ -11,7 +16,7 @@ import com.programmerdan.minecraft.contraptions.util.AdvItemStack;
  * @author ProgrammerDan
  * @since 1.0.0 September 2015
  */
-public class PipedRate {
+public class PipedRate implements ConfigurationSerializable {
 
 	/**
 	 * Constructs a new PipedRate.
@@ -22,6 +27,13 @@ public class PipedRate {
 	public PipedRate(AdvItemStack resource, TimeMeasure time) {
 		this.resource = resource;
 		this.time = time;
+	}
+	
+	public PipedRate(Map<String, Object> serial) {
+		PipedRate pr = PipedRate.deserialize(serial);
+		this.resource = pr.getResource();
+		this.time = pr.getTime();
+		pr = null;
 	}
 	
 	private AdvItemStack resource;
@@ -70,5 +82,27 @@ public class PipedRate {
 		AdvItemStack newStack = this.getResourceOverTime(newTime);
 		
 		return new PipedRate(newStack, newTime);
+	}
+
+	@Override
+	public Map<String, Object> serialize() {
+		Map<String, Object> result = new LinkedHashMap<String, Object>();
+		
+		result.put("resource", this.getResource());
+		result.put("time", this.getTime());
+		
+		return result;
+	}
+	
+	public static PipedRate deserialize(Map<String, Object> serial) {
+		AdvItemStack ais = (AdvItemStack) serial.get("resource");
+		TimeMeasure tm = (TimeMeasure) serial.get("time");
+		
+		PipedRate ps = new PipedRate(ais, tm);
+		return ps;
+	}
+	
+	public static PipedRate valueOf(Map<String, Object> serial) {
+		return PipedRate.deserialize(serial);
 	}
 }

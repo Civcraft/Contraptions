@@ -11,6 +11,7 @@ gadget_template_folder: Contraptions/gadgets/
 
 dao:
   database:
+    active: true
     driver: mysql
     host:
     port: 2306

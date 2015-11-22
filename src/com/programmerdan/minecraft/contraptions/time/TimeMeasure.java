@@ -1,5 +1,10 @@
 package com.programmerdan.minecraft.contraptions.time;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+
 /**
  * Represents a measure of a unit of time. This is an abstract concept, made concrete
  * by the utilizing context. Will typically represent either seconds, milliseconds, or ticks.
@@ -8,7 +13,7 @@ package com.programmerdan.minecraft.contraptions.time;
  * @author ProgrammerDan
  * @since 1.0.0 September, 2015
  */
-public class TimeMeasure implements Comparable<TimeMeasure>{
+public class TimeMeasure implements Comparable<TimeMeasure>, ConfigurationSerializable{
 	
 	public static final TimeMeasure ONE = new TimeMeasure(1.0d);
 	public static final TimeMeasure TWENTY = new TimeMeasure(20.0d);
@@ -26,5 +31,24 @@ public class TimeMeasure implements Comparable<TimeMeasure>{
 	}
 	public int compareTo(TimeMeasure tm) {
 		return (tm.getLength() < this.length) ? 1 : (tm.getLength() > this.length) ? -1 : 0;
+	}
+	
+	@Override
+	public Map<String, Object> serialize() {
+		Map<String, Object> result = new LinkedHashMap<String, Object>();
+		
+		result.put("length", this.getLength());
+		
+		return result;
+	}
+	
+	public static TimeMeasure deserialize(Map<String, Object> serial) {
+		double length = (Double) serial.get("length");
+		TimeMeasure tm = new TimeMeasure(length);
+		return tm;
+	}
+	
+	public static TimeMeasure valueOf(Map<String, Object> serial) {
+		return TimeMeasure.deserialize(serial);
 	}
 }

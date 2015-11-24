@@ -30,10 +30,8 @@ public class PipedRate implements ConfigurationSerializable {
 	}
 	
 	public PipedRate(Map<String, Object> serial) {
-		PipedRate pr = PipedRate.deserialize(serial);
-		this.resource = pr.getResource();
-		this.time = pr.getTime();
-		pr = null;
+		this.resource = (AdvItemStack) serial.get("resource");
+		this.time = (TimeMeasure) serial.get("time");
 	}
 	
 	private AdvItemStack resource;
@@ -95,11 +93,7 @@ public class PipedRate implements ConfigurationSerializable {
 	}
 	
 	public static PipedRate deserialize(Map<String, Object> serial) {
-		AdvItemStack ais = (AdvItemStack) serial.get("resource");
-		TimeMeasure tm = (TimeMeasure) serial.get("time");
-		
-		PipedRate ps = new PipedRate(ais, tm);
-		return ps;
+		return new PipedRate(serial);
 	}
 	
 	public static PipedRate valueOf(Map<String, Object> serial) {

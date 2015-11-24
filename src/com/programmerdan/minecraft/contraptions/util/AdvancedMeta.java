@@ -30,12 +30,21 @@ public class AdvancedMeta implements Cloneable, ConfigurationSerializable {
 	}
 	
 	public AdvancedMeta(Map<String, Object> serial) {
-		AdvancedMeta a = AdvancedMeta.deserialize(serial);
-		this.setCreationTime(a.getCreationTime());
-		this.setPlayerUUID(a.getPlayerUUID());
-		this.setRetrievable(a.getRetrievable());
-		this.setNameOverride(a.getNameOverride());
-		a = null;
+		if (serial.containsKey("playerUUID")) {
+			this.setPlayerUUID((String)serial.get("playerUUID"));
+		}
+		
+		if (serial.containsKey("nameOverride")) {
+			this.setNameOverride((String)serial.get("nameOverride"));
+		}
+		
+		if (serial.containsKey("creationTime")) {
+			this.setCreationTime( ( (Number) serial.get("creationTime")).longValue());
+		}
+		
+		if (serial.containsKey("retrievable")) {
+			this.setRetrievable( (Boolean) serial.get("retrievable"));
+		}
 	}
 	
 	/**
@@ -104,25 +113,7 @@ public class AdvancedMeta implements Cloneable, ConfigurationSerializable {
 	}
 	
 	public static AdvancedMeta deserialize(Map<String, Object> serial) {
-		AdvancedMeta result = new AdvancedMeta();
-		
-		if (serial.containsKey("playerUUID")) {
-			result.setPlayerUUID((String)serial.get("playerUUID"));
-		}
-		
-		if (serial.containsKey("nameOverride")) {
-			result.setNameOverride((String)serial.get("nameOverride"));
-		}
-		
-		if (serial.containsKey("creationTime")) {
-			result.setCreationTime( ( (Number) serial.get("creationTime")).longValue());
-		}
-		
-		if (serial.containsKey("retrievable")) {
-			result.setRetrievable( (Boolean) serial.get("retrievable"));
-		}
-		
-		return result;
+		return new AdvancedMeta(serial);
 	}
 	
 	public static AdvancedMeta valueOf(Map<String, Object> serial) {

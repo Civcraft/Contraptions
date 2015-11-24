@@ -23,6 +23,9 @@ public class TimeMeasure implements Comparable<TimeMeasure>, ConfigurationSerial
 	public TimeMeasure(double length) {
 		this.length = length;
 	}
+	public TimeMeasure(Map<String, Object> serial) {
+		this.length = (Double) serial.get("length");
+	}
 	public double getLength() {
 		return this.length;
 	}
@@ -43,9 +46,7 @@ public class TimeMeasure implements Comparable<TimeMeasure>, ConfigurationSerial
 	}
 	
 	public static TimeMeasure deserialize(Map<String, Object> serial) {
-		double length = (Double) serial.get("length");
-		TimeMeasure tm = new TimeMeasure(length);
-		return tm;
+		return new TimeMeasure(serial);
 	}
 	
 	public static TimeMeasure valueOf(Map<String, Object> serial) {

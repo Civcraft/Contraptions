@@ -1,9 +1,11 @@
 package com.programmerdan.minecraft.contraptions.gadget;
 
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import com.programmerdan.minecraft.contraptions.rate.PipedRate;
 import com.programmerdan.minecraft.contraptions.time.TimeMeasure;
@@ -31,12 +33,22 @@ import com.programmerdan.minecraft.contraptions.util.AdvItemStack;
  * @author ProgrammerDan
  * @since 1.0.0 September 2015
  */
-public abstract class GadgetBase implements GadgetInput, GadgetOutput {
+public abstract class GadgetBase implements GadgetInput, GadgetOutput, ConfigurationSerializable {
+	
+	private boolean storage;
+	private boolean privateStorage;
+	
 	/**
 	 * Indicator if this Gadget has a storage component or not.
 	 * @return true if this Gadget has public storage, false otherwise.
 	 */
-	public abstract boolean hasStorage();
+	public boolean hasStorage() {
+		return storage;
+	}
+	
+	public void setStorage(boolean storage) {
+		this.storage = storage;
+	}
 	
 	/**
 	 * Adjusts the storage based on flow rate INTO the storage against flow rate
@@ -106,7 +118,13 @@ public abstract class GadgetBase implements GadgetInput, GadgetOutput {
 	 * 
 	 * @return true if this gadget has a private storage, false otherwise.
 	 */
-	public abstract boolean hasPrivateStorage();
+	public boolean hasPrivateStorage() {
+		return this.privateStorage;
+	}
+	
+	public void setPrivateStorage(boolean privateStorage) {
+		this.privateStorage = privateStorage;
+	}
 	public abstract void adjustPrivateStorage(List<PipedRate> inflow,
 			List<PipedRate> outflow, TimeMeasure time);
 	public abstract void adjustPrivateStorageInstant(List<PipedRate> inflow, 
@@ -136,11 +154,29 @@ public abstract class GadgetBase implements GadgetInput, GadgetOutput {
 	 *     * split the difference? could need both.
 	 */
 	
-	private final Location location;
-	private final Material type;
+	public abstract Location getLocation();
 	
-	protected GadgetBase(Location location, Material type) {
-		 this.location = location;
-		 this.type = type;
+	private Material type;
+	
+	public Material getType() {
+		return this.type;
+	}
+	
+	public void setType(Material type) {
+		this.type = type;
+	}
+	
+	protected GadgetBase(boolean storage, boolean privateStorage, Material defaultType) {
+		setStorage(storage);
+		setPrivateStorage(privateStorage);
+		setType(defaultType);
+	}
+	
+	protected GadgetBase(Map<String, Object> serial) {
+		this.storage = (serial.containsKey("storage") ? (Boolean) serial.get("storage") : false);
+		this.privateStorage = (serial.containsKey("private_storage") ? (Boolean) serial.get("private_storage") : false);
+		if (this.type == null) {
+			this.type = (serial.containsKey("default_type") ? (Material) serial.get("default_type") : null);
+		}
 	}
 }

@@ -1,0 +1,35 @@
+types:
+  - generator
+  - container
+  - consumer
+  - collector
+  - totem
+  - marker
+  - converter
+
+generator:
+  name: Generator
+  configurations:
+    - coal_fired
+    - redstone_enriched
+    - solar_power
+  base_config:
+    storage: false
+    private_storage: true
+    default_type: FURNACE
+
+container:
+  name: Container
+  configurations:
+    - simple_chest
+    - high_capacity
+    - high_throughput
+  base_config:
+    storage: true
+    private_storage: false
+    default_type: CHEST
+
+consumer:
+  name: Consumer
+  configurations:
+    - 

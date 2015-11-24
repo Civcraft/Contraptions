@@ -1,5 +1,6 @@
 package com.programmerdan.minecraft.contraptions;
 
+
 public class ContraptionsConfiguration {
 	
 
@@ -58,74 +59,6 @@ public class ContraptionsConfiguration {
 		return this.gadgetTemplateFolder;
 	}
 	
-	class DaoConfig {
-		private boolean active;
-		private String host;
-		private String username;
-		private transient String password;
-		private String database;
-		private String schema;
-		private int port;
-		private Driver driver;
-
-		public void setActive(boolean active) {
-			this.active = active;
-		}
-		
-		public boolean isActive() {
-			return this.active;
-		}
-		
-		public void setHost(String host) {
-			this.host = host;
-		}
-		public String getHost() {
-			return this.host;
-		}
-
-		public void setUsername(String username) {
-			this.username = username;
-		}
-		public String getUsername() {
-			return this.username;
-		}
-
-		public void setPassword(String password) {
-			this.password = password;
-		}
-		public String getPassword() {
-			return this.password;
-		}
-
-		public void setDatabase(String database) {
-			this.database = database;
-		}
-		public String getDatabase() {
-			return this.database;
-		}
-
-		public void setSchema(String schema) {
-			this.schema = schema;
-		}
-		public String getSchema() {
-			return this.schema;
-		}
-
-		public void setPort(int port) {
-			this.port = port;
-		}
-		public int getPort() {
-			return this.port;
-		}
-
-		public void setDriver(Driver driver) {
-			this.driver = driver;
-		}
-		public Driver getDriver() {
-			return this.driver;
-		}
-	}
-
 	class CacheConfig {
 		private long gadgetCacheSize;
 		private long contraptionStateCacheSize;

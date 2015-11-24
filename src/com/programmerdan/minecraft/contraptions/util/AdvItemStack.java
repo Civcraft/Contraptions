@@ -48,12 +48,22 @@ public class AdvItemStack implements Cloneable, ConfigurationSerializable{
 	}
 	
 	public AdvItemStack(Map<String, Object> serial) {
-		AdvItemStack ais = AdvItemStack.deserialize(serial);
-		this.setType(ais.getType());
-		this.setIncludeSubtypes(ais.getIncludeSubtypes());
-		this.setSize(ais.getSize());
-		this.setMeta(ais.getMeta());
-		ais = null;
+		if (serial.containsKey("type")) {
+			this.type = (ItemStack) serial.get("type");
+		}
+		if (serial.containsKey("includeSubtypes")) {
+			this.includeSubtypes = (Boolean) serial.get("includeSubtypes");
+		} else {
+			this.includeSubtypes = false;
+		}
+		if (serial.containsKey("meta")) {
+			this.meta = (AdvancedMeta) serial.get("meta");
+		}
+		if (serial.containsKey("size")) {
+			this.size = ( (Number) serial.get("size") ).doubleValue();
+		} else {
+			this.size = 1.0d;
+		}
 	}
 	
 	public double getSize() {
@@ -142,26 +152,7 @@ public class AdvItemStack implements Cloneable, ConfigurationSerializable{
 	}
 	
 	public static AdvItemStack deserialize(Map<String, Object> serial) {
-		ItemStack is = null;
-		if (serial.containsKey("type")) {
-			is = (ItemStack) serial.get("type");
-		}
-		boolean inc = false;
-		if (serial.containsKey("includeSubtypes")) {
-			inc = (Boolean) serial.get("includeSubtypes");
-		}
-		AdvancedMeta am = null;
-		if (serial.containsKey("meta")) {
-			am = (AdvancedMeta) serial.get("meta");
-		}
-		double sz = 1.0d;
-		if (serial.containsKey("size")) {
-			sz = ( (Number) serial.get("size") ).doubleValue();
-		}
-		
-		AdvItemStack result = new AdvItemStack(is, inc, sz, am);
-		
-		return result;
+		return new AdvItemStack(serial);
 	}
 	
 	public static AdvItemStack valueOf(Map<String, Object> serial) {

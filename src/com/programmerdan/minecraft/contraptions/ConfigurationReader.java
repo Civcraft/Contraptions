@@ -62,7 +62,7 @@ public class ConfigurationReader {
 				
 				ConfigurationSection databaseConf = daoConf.getConfigurationSection("database");
 				
-				ContraptionsConfiguration.DaoConfig dao = config.getDaoConfig();
+				DaoConfig dao = config.getDaoConfig();
 				
 				if (databaseConf == null) {
 					log.log(Level.WARNING, "Database section not found in config, disabling");

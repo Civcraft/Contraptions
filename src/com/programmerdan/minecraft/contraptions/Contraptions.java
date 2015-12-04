@@ -6,6 +6,8 @@ import java.util.logging.Logger;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import vg.civcraft.mc.civmodcore.ACivMod;
+
 /**
  * <p>The server side technology mod to end all server side technology mods.</p>
  * <p>See the readme and documentation for more</p>
@@ -13,7 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author ProgrammerDan <programmerdan@gmail.com>
  * @since 1.0.0
  */
-public class Contraptions extends JavaPlugin {
+public class Contraptions extends ACivMod {
 	private static CommandHandler commandHandler;
 	private static Logger logger;
 	private static JavaPlugin plugin;
@@ -21,6 +23,10 @@ public class Contraptions extends JavaPlugin {
 
 	public static CommandHandler commandHandler() {
 		return Contraptions.commandHandler;
+	}
+	
+	protected String getPluginName() {
+	    return "Contraptions";
 	}
 
 	public static Logger logger() {
@@ -41,6 +47,7 @@ public class Contraptions extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		super.onEnable();
 		// setting a couple of static fields so that they are available elsewhere
 		Contraptions.logger = getLogger();
 		Contraptions.plugin = this;
